@@ -1,15 +1,15 @@
 package com.DamianUrbaniak.Battleships.service;
 
 
-import com.DamianUrbaniak.Battleships.model.Player;
+
 import com.DamianUrbaniak.Battleships.model.PlayerMovement;
 import com.DamianUrbaniak.Battleships.model.GameState;
 import com.DamianUrbaniak.Battleships.repository.GameStateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+
 
 @Service
 public class PlayerInputHandler {
@@ -27,9 +27,11 @@ public class PlayerInputHandler {
         return new PlayerMovement(Integer.parseInt(coordinates[0]), Integer.parseInt(coordinates[1]));
     }
 
-    public void putShipOnPlayerGrid(PlayerMovement playerMovement, Long id) {
+    public void putShipOnPlayerGrid(PlayerMovement playerMovement, Long id, int playerNumber) {
 
-        GameState gm = gameStateRepository.findById(id).orElseThrow();
+        GameState gm = gameStateRepository.findById(id).orElseThrow(()-> new IllegalStateException(
+                "Unexpected error"
+        ));
         char[][] playerGrid = gm.getPlayerByNumber(1).getGameGrid();
         int x = playerMovement.getX();
         int y = playerMovement.getY();
@@ -46,7 +48,9 @@ public class PlayerInputHandler {
     }
 
     public void fire(PlayerMovement playerMovement, Long id, int playerNumber) {
-        GameState gm = gameStateRepository.findById(id).orElseThrow();
+        GameState gm = gameStateRepository.findById(id).orElseThrow(()-> new IllegalStateException(
+                "Unexpected error"
+        ));
 
         int attacker = 0;
         int defender = 0;
